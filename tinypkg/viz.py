@@ -3,12 +3,11 @@ import pandas as pd
 
 import holoviews as hv
 hv.extension('bokeh')
-import bokeh.palettes
 
 import tinypkg.general_utils as utils
 
 
-def plot_timecourse(df, variable, value, condition=None, split=None, sort=None, cmap='default', show_all=False,
+def plot_timecourse(df, variable, value, condition=None, split=None, sort=None, cmap=None, show_all=False,
                     show_points='default', legend=False, height=350, width=500, additional_opts={}):
         
     """
@@ -28,7 +27,7 @@ def plot_timecourse(df, variable, value, condition=None, split=None, sort=None, 
         sort : Which column is used to determine the sorting of the data. Defaults to None, and will
                sort by the condition column (alphabetical) if present, otherwise variable.
                
-    cmap : The colormap to use. Any Holoviews/Bokeh colormap is fine. Defaults to viridis if possible.
+    cmap : The colormap to use. Any Holoviews/Bokeh colormap is fine. Uses Holoviews default if None.
     show_all : If split is not None, whether or not to use a drop-down or to show all the plots (layout).
                Note that this can be pretty buggy from Holoview's layout system. There is usually a way to
                show all the info you want, in a nice way. Just play around.
@@ -53,21 +52,6 @@ def plot_timecourse(df, variable, value, condition=None, split=None, sort=None, 
     utils.check_df_col(df, condition, name='condition')
     utils.check_df_col(df, split, name='split')
     utils.check_df_col(df, sort, name='sort')
-
-    # Decide colormap
-    if cmap == 'default':
-        if conditions is None:
-            cmap = None
-        else:
-            number = len(df[condition].unique())
-            try:
-                cmap = getattr(bokeh.palettes, 'viridis')(number+3)[1:-1]
-            except NameError:
-                try:
-                    import bokeh.palettes
-                    cmap = getattr(bokeh.palettes, 'viridis')(number+3)[1:-1]
-                except ImportError:
-                    cmap = None
 
     # Check for replicates; aggregate df
     groups = [grouping for grouping in (condition, split) if grouping is not None]
