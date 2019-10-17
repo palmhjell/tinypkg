@@ -5,7 +5,7 @@ import holoviews as hv
 hv.extension('bokeh')
 import bokeh.palettes
 
-import .general_utils as utils
+import tinypkg.general_utils as utils
 
 
 def plot_timecourse(df, variable, value, condition=None, split=None, sort=None, cmap='default', show_all=False,
