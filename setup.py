@@ -1,17 +1,24 @@
 from setuptools import setup, find_packages
 
-__name__ = 'tinypkg'
-__author__ = 'Patrick Almhjell'
-__email__ = 'palmhjell@caltech.edu'
-
-__version__ = '0.0.1'
-
 
 with open("README.md", "r") as f:
     long_description = f.read()
 
+
+with open("tinypkg/__init__.py", "r") as f:
+    init = f.readlines()
+
+for line in init:
+    if '__author__' in line:
+        __author__ = line.split("'")[-2]
+    if '__email__' in line:
+        __email__ = line.split("'")[-2]
+    if '__version__' in line:
+        __version__ = line.split("'")[-2]
+
+        
 setup(
-    name=__name__,
+    name='tinypkg',
     version=__version__,
     author=__author__,
     author_email=__email__,
